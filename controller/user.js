@@ -18,3 +18,4 @@ exports.createUser = async (req, res) => {
         return res.send({ code: 404, message: 'Service error' });
       }
   };
+

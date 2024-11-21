@@ -9,7 +9,8 @@ const router = express.Router();
 const contactRouter = require('./routes/contact');
 const userRouter =require('./routes/user')
 const authRouter = require('./routes/auth');
-//parse requests of content-type - application/json
+
+// parse requests of content-type - application/json
 app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
