@@ -2,10 +2,11 @@ const path = require('path');
 const model = require('../model/contact');
 const Contact = model.Contact;
 exports.createContact = async (req, res) => {
+  const { name, email, messages } = req.body;
    const newContact = new Contact({
-    name: req.body.name,
-    email: req.body.email,
-    messages: req.body.messages,
+    name,
+    email,
+    messages
     });
     const success = await newContact.save();
     if (success) {

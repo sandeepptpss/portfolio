@@ -14,11 +14,11 @@ exports.userLogin = async (req, res) => {
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).send({ message: 'Invalid email or password' });
+      return res.status(401).send({ message: 'Invalid email or password' ,status:401 });
     }
     const token = jwt.sign(
       { id: user._id, email: user.email },
-      process.env.JWT_SECRET || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3M2YyOTZjNGZhNmZmNzI3OTI2MGNiZiIsImVtYWlsIjoiUnVjaGlrYTEyQGdtYWlsLmNvbSIsImlhdCI6MTczMjIwNjYzMiwiZXhwIjoxNzMyMjEwMjMyfQ.sMc6lZdI_c-6OOxyEh6w0od64If0-w0huB77PG7-OLw',
+      process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
     return res.status(200).send({ message: 'Login successful', user: { id: user._id, email: user.email }, token });
