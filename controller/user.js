@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt'); 
 const model = require('../model/user');
 const User = model.User;
+// Insert User data
 exports.createUser = async (req, res) => {
   const { username, email, password } = req.body;
   if (!username || !email || !password) {
@@ -23,16 +24,53 @@ exports.createUser = async (req, res) => {
         return res.send({ code: 404, message: 'Service error' });
       }
   };
-
-
+  // View All User data
   exports.getAllUsers = async (req ,res)=>{
-    try {
-      const users = await User.find();
-      res.status(200).json(users);
-    } catch (error) {
-      console.error('Error fetching posts:', error.message);
-      res.status(500).json({ message: 'Server error' });
-    }
-  
-
+      const showAllUsers = await User.find();
+      if (showAllUsers) {
+        res.status(200).json(showAllUsers);
+      } else {
+        res.status(500).json({ message: 'Server error' });
+      }
   }
+    // View specific User data
+  exports.getUser = async (req, res) => {
+    const id = req.params.id;
+    const user = await User.findById(id);
+    res.json(user);
+  };
+      // Delete User data
+  exports.deleteUser = async (req, res) => {
+    const id = req.params.id;
+    const deleteDoc = await User.findOneAndDelete({_id:id});
+    if (deleteDoc) {
+      return res.send({ code: 201, message: 'Delete successflly' , user: deleteDoc });
+    } else {
+      return res.send({ code: 404, message: 'Service error' });
+    }
+};
+// exports.updateUser = async(req ,res)=>{
+//   const id = req.params.id;
+//   const updateDoc = await User.findOneAndUpdate({_id:id},req.body,{new:true})
+//   console.log(updateDoc)
+//   if (updateDoc) {
+//     return res.send({ code: 201, message: 'Update successflly' , user: updateDoc });
+//   } else {
+//     return res.send({ code: 404, message: 'Service error' });
+//   }
+// }
+// Update user data 
+exports.updateUser = async(req, res) => {
+  try {
+      const {id} = req.params;
+      const userupdate = await User.findByIdAndUpdate(id, req.body);
+      if(!userupdate){
+          return res.status(404).json({message: `cannot find any product with ID ${id}`})
+      }
+      const updatedUser = await User.findById(id);
+      res.status(200).json(updatedUser);
+     }catch (error) {
+      res.status(500).json({message: error.message})
+  }
+};
+  

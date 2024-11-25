@@ -3,9 +3,7 @@ const { Schema } = mongoose;
 const conatctSchema = new Schema({
   name: { type: String},
   email: {
-    type: String,
-    required: [true, 'Please add an email'],
-    unique: true,
+    type: String
   },
   messages: { type: String }
 });

@@ -7,7 +7,7 @@ exports.createContact = async (req, res) => {
     name,
     email,
     messages
-    });
+  });
     const success = await newContact.save();
     if (success) {
       return res.send({ code: 200, message: 'add success' });
