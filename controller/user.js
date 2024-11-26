@@ -39,7 +39,7 @@ exports.createUser = async (req, res) => {
     const user = await User.findById(id);
     res.json(user);
   };
-      // Delete User data
+  // Delete User data
   exports.deleteUser = async (req, res) => {
     const id = req.params.id;
     const deleteDoc = await User.findOneAndDelete({_id:id});
@@ -49,21 +49,11 @@ exports.createUser = async (req, res) => {
       return res.send({ code: 404, message: 'Service error' });
     }
 };
-// exports.updateUser = async(req ,res)=>{
-//   const id = req.params.id;
-//   const updateDoc = await User.findOneAndUpdate({_id:id},req.body,{new:true})
-//   console.log(updateDoc)
-//   if (updateDoc) {
-//     return res.send({ code: 201, message: 'Update successflly' , user: updateDoc });
-//   } else {
-//     return res.send({ code: 404, message: 'Service error' });
-//   }
-// }
-// Update user data 
+//Update user data 
 exports.updateUser = async(req, res) => {
   try {
       const {id} = req.params;
-      const userupdate = await User.findByIdAndUpdate(id, req.body);
+      const userupdate = await User.findById(id, req.body);
       if(!userupdate){
           return res.status(404).json({message: `cannot find any product with ID ${id}`})
       }

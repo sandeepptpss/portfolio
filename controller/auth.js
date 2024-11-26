@@ -5,18 +5,15 @@ const User = model.User;
 exports.userLogin = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    
     if (!username && !email) {
       return res.status(400).send({ message: 'Username or Email is required' });
     }
-
     if (!password) {
       return res.status(400).send({ message: 'Password is required' });
     }
     const user = await User.findOne({
       $or: [{ username }, { email }]
     });
-
     if (!user) {
       return res.status(404).send({ message: 'User not found' });
     }

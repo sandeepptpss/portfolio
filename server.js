@@ -23,6 +23,6 @@ app.use('/api/contact', contactRouter.router);
 app.use('/api',userRouter.router);
 app.use('/api',authRouter.router);
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT, () =>{
   console.log(`App started on port ${PORT}`);
 });

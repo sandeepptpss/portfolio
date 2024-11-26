@@ -24,3 +24,12 @@ exports.getAllContact = async (req, res) => {
     res.status(500).send({ code: 500, message: 'Internal Server Error' });
   }
 };
+exports.deleteContact = async (req , res)=>{
+ const id = req.params.id;
+ const deleteContact = await Contact.deleteOne({_id:id});
+if (deleteContact) {
+  return res.send({ code: 200, message: 'Deleted Data Successfully' });
+} else {
+  return res.send({ code: 404, message: 'Service error' });
+}
+}
