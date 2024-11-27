@@ -50,17 +50,20 @@ exports.createUser = async (req, res) => {
     }
 };
 //Update user data 
-exports.updateUser = async(req, res) => {
+
+exports.updateUser = async (req, res) => {
   try {
-      const {id} = req.params;
-      const userupdate = await User.findById(id, req.body);
-      if(!userupdate){
-          return res.status(404).json({message: `cannot find any product with ID ${id}`})
-      }
-      const updatedUser = await User.findById(id);
-      res.status(200).json(updatedUser);
-     }catch (error) {
-      res.status(500).json({message: error.message})
+    const { id } = req.params;
+    const updatedUser = await User.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    if (!updatedUser) {
+      return res.status(404).json({ message: `Cannot find any user with ID ${id}` });
+    }
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
+
   
