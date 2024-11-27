@@ -17,13 +17,13 @@ const  userSchema = new Schema({
         required:true
     },
   resetPasswordToken: { 
-    type: String,
-     default: null
+    type: String
      },
   resetPasswordExpires: { 
-    type: Date,
-     default: null
+    type: Date
      },
-     token: String,
+     token:{
+      token: String,
+    }
 });
 exports.User = mongoose.model('User', userSchema);
