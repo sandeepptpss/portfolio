@@ -6,11 +6,13 @@ const path = require('path');
 const app = express();
 const bodyParser = require('body-parser')
 const multer = require('multer');
+// const fileUpload = require('express-fileupload');
 const router = express.Router();
 const contactRouter = require('./routes/contact');
 const userRouter = require('./routes/user')
 const authRouter = require('./routes/auth');
 const portfolioRouter = require('./routes/portfolio');
+
 // parse requests of content-type - application/json
 app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
@@ -27,13 +29,18 @@ const storage = multer.diskStorage({
     cb(null, `${name}-${Date.now()}${ext}`); // Add timestamp to avoid overwriting
   },
 });
+
 // Use Multer with storage configuration
 const upload = multer({ storage });
+
 // Middleware to handle file uploads
 app.use(upload.any());
 app.use('/uploads/images', express.static('uploads/images'));
+
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+// app.use(fileUpload({ limits: { fileSize: 50 * 1024 * 1024 } }));
+
 app.use('/api/contact', contactRouter.router);
 app.use('/api', userRouter.router);
 app.use('/api', authRouter.router);
