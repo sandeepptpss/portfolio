@@ -131,9 +131,8 @@ exports.resetPassword = async (req, res) => {
 
     await user.save();
     console.log('Password reset successful for user:', user._id);
-
     return res.status(200).send({ message: 'Password reset successful' });
-  } catch (error) {
+  }catch (error) {
     console.error('Error in resetPassword:', error);
     return res.status(500).send({ message: 'Server error', error: error.message });
   }
