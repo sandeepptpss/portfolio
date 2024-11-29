@@ -8,8 +8,8 @@ exports.createContact = async (req, res) => {
     email,
     messages
   });
-    const success = await newContact.save();
-    if (success) {
+  const success = await newContact.save();
+    if(success) {
       return res.send({ code: 200, message: 'add success' });
     } else {
       return res.send({ code: 404, message: 'Service error' });
@@ -24,7 +24,7 @@ exports.getAllContact = async (req, res) => {
     res.status(500).send({ code: 500, message: 'Internal Server Error' });
   }
 };
-exports.deleteContact = async (req , res)=>{
+exports.deleteContact = async(req , res)=>{
  const id = req.params.id;
  const deleteContact = await Contact.deleteOne({_id:id});
 if (deleteContact) {

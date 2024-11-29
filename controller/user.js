@@ -19,7 +19,7 @@ exports.createUser = async (req, res) => {
     });
     const success = await newUser.save();
     if (success) {
-        return res.send({ code: 200, message: 'add success' , user: success });
+        return res.send({ code: 201, message: 'add success' , user: success });
       } else {
         return res.send({ code: 404, message: 'Service error' });
       }

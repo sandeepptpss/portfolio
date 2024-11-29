@@ -61,7 +61,7 @@ exports.forgotPassword = async (req, res) => {
     await user.save();
 
     // Generate the reset password URL
-    const resetUrl = `${process.env.CLIENT_URL}/reset-password/${token}`;
+    const resetUrl = `${process.env.CLIENT_URL}/reset-password/?token='${token}'`;
 
     // Set up the transporter for nodemailer
     const transporter = nodemailer.createTransport({
@@ -123,9 +123,6 @@ exports.resetPassword = async (req, res) => {
       console.error('User not found or token expired');
       return res.status(400).send({ message: 'Invalid or expired token' });
     }
-
-    console.log('User found for token:', user);
-
     // Update password
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
