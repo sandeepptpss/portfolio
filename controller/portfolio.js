@@ -1,7 +1,6 @@
 const path = require('path');
 const model =require('../model/portfolio');
 const Portfolio =model.Portfolio;
-const { ObjectId } = require('mongodb'); 
 exports.portfolioCreate =async(req, res)=>{
     const { title, description, portfoliolink } = req.body;
     const image = req.files[0]
@@ -20,7 +19,7 @@ exports.portfolioCreate =async(req, res)=>{
     });
     const success = await newPortfolio.save();
     if(success){
-    return res.send({ code: 200, message: 'Portfolio Successfully' });
+    return res.send({ code: 200, message: 'Portfolio Data Insert Successfully' });
     }else{
     return res.send({ code: 404, message: 'Service error' });
   }
@@ -33,12 +32,10 @@ if(portfolioShow){
   return res.send({ code: 404, message: 'Service error' });
 }
 };
-
 exports.getPortfolio = async(req, res)=>{
   const id = req.params.id;
-  console.log(id)
+  console.log(id);
   const portfolio = await Portfolio.findById(id);
-
   if(portfolio){
     return res.status(200).json(portfolio);
   }else{

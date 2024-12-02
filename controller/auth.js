@@ -50,19 +50,15 @@ exports.forgotPassword = async (req, res) => {
     if (!user) {
       return res.status(404).send({ message: 'User not found' });
     }
-
     // Generate token and set expiration
     const token = crypto.randomBytes(32).toString('hex');
     const expiration = Date.now() + 3600000; // 1 hour expiry time (3600000ms = 1 hour)
-
     // Save token and expiration to the user's record
     user.resetPasswordToken = token;
     user.resetPasswordExpires = expiration;
     await user.save();
-
     // Generate the reset password URL
     const resetUrl = `${process.env.CLIENT_URL}/reset-password/?token='${token}'`;
-
     // Set up the transporter for nodemailer
     const transporter = nodemailer.createTransport({
       service: 'Gmail',
@@ -71,7 +67,6 @@ exports.forgotPassword = async (req, res) => {
         pass: process.env.EMAIL_PASS,
       },
     });
-
     // Define email options, including the reset password link
     const mailOptions = {
       to: user.email,
@@ -84,7 +79,6 @@ exports.forgotPassword = async (req, res) => {
         <p>The link will expire in 1 hour.</p>
       `,
     };
-
     // Send the email
     await transporter.sendMail(mailOptions);
     return res.status(200).send({
@@ -102,23 +96,18 @@ exports.resetPassword = async (req, res) => {
   try {
     const { token } = req.query; // Extract token from query string
     const { password } = req.body;
-
     if (!token) {
       console.error('Token not provided in query');
       return res.status(400).send({ message: 'Token is required' });
     }
     console.log('Token received:', token);
-
     if (!password) {
       return res.status(400).send({ message: 'Password is required' });
     }
-
-    // Attempt to find the user
     const user = await User.findOne({
       resetPasswordToken: token,
       resetPasswordExpires: { $gt: Date.now() }
     });
-
     if (!user) {
       console.error('User not found or token expired');
       return res.status(400).send({ message: 'Invalid or expired token' });
@@ -128,11 +117,10 @@ exports.resetPassword = async (req, res) => {
     user.password = await bcrypt.hash(password, salt);
     user.resetPasswordToken = null;
     user.resetPasswordExpires = null;
-
     await user.save();
     console.log('Password reset successful for user:', user._id);
     return res.status(200).send({ message: 'Password reset successful' });
-  }catch (error) {
+   }catch (error) {
     console.error('Error in resetPassword:', error);
     return res.status(500).send({ message: 'Server error', error: error.message });
   }
