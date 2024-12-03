@@ -3,6 +3,9 @@ const model = require('../model/contact');
 const Contact = model.Contact;
 exports.createContact = async (req, res) => {
   const { name, email, messages } = req.body;
+  if (!email) {
+    return res.status(400).send({ code: 400, message: 'Email is required.' });
+  }
    const newContact = new Contact({
     name,
     email,

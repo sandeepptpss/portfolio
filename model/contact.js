@@ -3,7 +3,8 @@ const { Schema } = mongoose;
 const conatctSchema = new Schema({
   name: { type: String},
   email: {
-    type: String
+    type: String,
+    required :true
   },
   messages: { type: String }
 });

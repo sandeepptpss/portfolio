@@ -3,7 +3,7 @@ const model = require('../model/user');
 const User = model.User;
 // Insert User data
 exports.createUser = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { name, username,gender, email, password } = req.body;
   if (!username || !email || !password) {
     return res.status(400).send({ code: 400, message: 'Invalid input data' });
   }
@@ -13,7 +13,9 @@ exports.createUser = async (req, res) => {
       return res.status(409).send({ code: 409, message: 'Email already in use' });
     }
     const newUser = new User({
+      name,
       username,
+      gender,
       email,
       password: hashedPassword,
     });
@@ -51,7 +53,6 @@ exports.getUser = async (req, res) => {
 // Delete a user by ID
 exports.deleteUser = async (req, res) => {
   const { id } = req.params;
-
   try {
     const deletedUser = await User.findByIdAndDelete(id);
     if (!deletedUser) {
