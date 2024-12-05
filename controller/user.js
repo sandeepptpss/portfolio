@@ -39,7 +39,6 @@ exports.getAllUsers = async (req, res) => {
 // Get a specific user by ID
 exports.getUser = async (req, res) => {
   const { id } = req.params;
-
   try {
     const user = await User.findById(id);
     if (!user) {
@@ -70,7 +69,6 @@ exports.deleteUser = async (req, res) => {
 // Update a user by ID
  exports.updateUser = async (req, res) => {
   const { id } = req.params;
-
   try {
     const updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true });
     if (!updatedUser) {

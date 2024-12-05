@@ -1,7 +1,6 @@
 const path = require('path');
 const model = require('../model/portfolio');
 const Portfolio = model.Portfolio;
-
 // insert data portfolio
 exports.portfolioCreate = async (req, res) => {
 	const {
@@ -21,6 +20,15 @@ exports.portfolioCreate = async (req, res) => {
 			code: 409,
 			message: 'Title already in use'
 		});
+	}
+	const existingLink = await Portfolio.findOne({
+		portfoliolink
+	});
+	if(existingLink){
+		return res.status(409).send({
+			conde:409,
+			message:'Portfoliolink already in use'
+		})
 	}
 	const newPortfolio = new Portfolio({
 		title,
@@ -82,7 +90,7 @@ exports.deletePortfolio = async (req, res) => {
 		message: 'Portfolio deleted successfully',
 		user: deletedPortfolio,
 	});}
-
+// updated Portfolio
   exports.updatePortFolio =async(req , res)=>{
     const id =req.params.id;
     const updateData = await Portfolio.findByIdAndUpdate(id);
@@ -97,6 +105,4 @@ exports.deletePortfolio = async (req, res) => {
       return res.status(404).json({
         message: `No Portfolio found with ID ${id}`
       })
-    }
-
-  }
+    }}

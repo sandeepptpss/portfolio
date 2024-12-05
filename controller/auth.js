@@ -38,14 +38,12 @@ exports.userLogin = async (req, res) => {
     return res.status(500).send({ message: 'Server error', error: error.message });
   }
 };
-
 exports.forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
     if (!email) {
       return res.status(400).send({ message: 'Email is required' });
     }
-
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).send({ message: 'User not found' });
@@ -58,7 +56,7 @@ exports.forgotPassword = async (req, res) => {
     user.resetPasswordExpires = expiration;
     await user.save();
     // Generate the reset password URL
-    const resetUrl = `${process.env.CLIENT_URL}/reset-password/?token='${token}'`;
+    const resetUrl = `${process.env.CLIENT_URL}/reset-password/?token=${token}`;
     // Set up the transporter for nodemailer
     const transporter = nodemailer.createTransport({
       service: 'Gmail',
@@ -73,28 +71,37 @@ exports.forgotPassword = async (req, res) => {
       from: process.env.EMAIL_USER,
       subject: 'Password Reset Request',
       html: `
-        <p>You requested a password reset</p>
-        <p>Click the link below to reset your password:</p>
-        <a href="${resetUrl}">${resetUrl}</a>
-        <p>The link will expire in 1 hour.</p>
-      `,
+      <h2>Reset your password</h2>
+      <p>Click the button below to reset your password:</p>
+      <a href="${resetUrl}" style="
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #ffffff;
+        background-color: #007bff;
+        text-decoration: none;
+        border-radius: 5px;
+        border: none;
+        text-align: center;
+      ">
+        Reset your password
+      </a>`,
     };
-    // Send the email
     await transporter.sendMail(mailOptions);
     return res.status(200).send({
       message: 'Password reset email sent',
       token, 
-      expiresAt: expiration, // Include token expiration time (optional)
+      expiresAt: expiration,
     });
   } catch (error) {
     console.error('Error in forgotPassword:', error);
     return res.status(500).send({ message: 'Server error', error: error.message });
   }
 };
-//function resetPassword 
+// function resetPassword 
 exports.resetPassword = async (req, res) => {
   try {
-    const { token } = req.query; // Extract token from query string
+    const { token } = req.query;
     const { password } = req.body;
     if (!token) {
       console.error('Token not provided in query');
@@ -112,7 +119,7 @@ exports.resetPassword = async (req, res) => {
       console.error('User not found or token expired');
       return res.status(400).send({ message: 'Invalid or expired token' });
     }
-    // Update password
+    //Update password
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
     user.resetPasswordToken = null;
@@ -120,7 +127,7 @@ exports.resetPassword = async (req, res) => {
     await user.save();
     console.log('Password reset successful for user:', user._id);
     return res.status(200).send({ message: 'Password reset successful' });
-   }catch (error) {
+    }catch (error){
     console.error('Error in resetPassword:', error);
     return res.status(500).send({ message: 'Server error', error: error.message });
   }
