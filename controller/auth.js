@@ -1,5 +1,5 @@
 const model = require('../model/user');
-const bcrypt = require('bcrypt'); 
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
@@ -26,7 +26,7 @@ exports.userLogin = async (req, res) => {
     const token = jwt.sign(
       { id: user._id, email: user.email, username: user.username },
       process.env.JWT_SECRET,
-      { expiresIn: '2h' }
+      { expiresIn: '1h' }
     );
     return res.status(200).send({
       message: 'Login successful',
@@ -38,6 +38,7 @@ exports.userLogin = async (req, res) => {
     return res.status(500).send({ message: 'Server error', error: error.message });
   }
 };
+
 exports.forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -70,8 +71,7 @@ exports.forgotPassword = async (req, res) => {
       to: user.email,
       from: process.env.EMAIL_USER,
       subject: 'Password Reset Request',
-      html: `
-      <h2>Reset your password</h2>
+      html: `<h2>Reset your password</h2>
       <p>Click the button below to reset your password:</p>
       <a href="${resetUrl}" style="
         display: inline-block;
@@ -90,7 +90,7 @@ exports.forgotPassword = async (req, res) => {
     await transporter.sendMail(mailOptions);
     return res.status(200).send({
       message: 'Password reset email sent',
-      token, 
+      token,
       expiresAt: expiration,
     });
   } catch (error) {
@@ -127,10 +127,8 @@ exports.resetPassword = async (req, res) => {
     await user.save();
     console.log('Password reset successful for user:', user._id);
     return res.status(200).send({ message: 'Password reset successful' });
-    }catch (error){
+  } catch (error) {
     console.error('Error in resetPassword:', error);
     return res.status(500).send({ message: 'Server error', error: error.message });
   }
-};
-
-
+}

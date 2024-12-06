@@ -7,7 +7,7 @@ const  userSchema = new Schema({
   username: { 
         type: String
     },
-    gender: { 
+  gender: { 
       type: String
   },
   email:{
@@ -16,17 +16,18 @@ const  userSchema = new Schema({
       uniique :true
     },
   password :{
-        type: String,
-        required:true
+      type: String,
+      required:true
     },
   resetPasswordToken: { 
-    type: String
+      type: String
      },
   resetPasswordExpires: { 
-    type: Date
-     },
-     token:{
+     type: Date
+  },
+  token:{
       token: String,
-    }
+  }
 });
 exports.User = mongoose.model('User', userSchema);
+

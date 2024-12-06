@@ -37,7 +37,7 @@ exports.getAllUsers = async (req, res) => {
 };
 
 // Get a specific user by ID
-exports.getUser = async (req, res) => {
+exports.getUser = async (req, res)=>{
   const { id } = req.params;
   try {
     const user = await User.findById(id);
@@ -51,7 +51,8 @@ exports.getUser = async (req, res) => {
 };
 // Delete a user by ID
 exports.deleteUser = async (req, res) => {
-  const { id } = req.params;
+  // const { id } = req.params;
+  const id = req.params.id;
   try {
     const deletedUser = await User.findByIdAndDelete(id);
     if (!deletedUser) {

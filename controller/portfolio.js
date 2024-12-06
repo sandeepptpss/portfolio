@@ -18,7 +18,7 @@ exports.portfolioCreate = async (req, res) => {
 	if (existingTitle) {
 		return res.status(409).send({
 			code: 409,
-			message: 'Title already in use'
+			message: 'Title already use'
 		});
 	}
 	const existingLink = await Portfolio.findOne({
@@ -27,7 +27,7 @@ exports.portfolioCreate = async (req, res) => {
 	if(existingLink){
 		return res.status(409).send({
 			conde:409,
-			message:'Portfoliolink already in use'
+			message:'Portfoliolink already use'
 		})
 	}
 	const newPortfolio = new Portfolio({
@@ -65,7 +65,6 @@ exports.portfolioViews = async (req, res) => {
 // get Portfolio data
 exports.getPortfolio = async (req, res) => {
 	const id = req.params.id;
-	console.log(id);
 	const portfolio = await Portfolio.findById(id);
 	if (portfolio) {
 		return res.status(200).json(portfolio);
@@ -91,7 +90,7 @@ exports.deletePortfolio = async (req, res) => {
 		user: deletedPortfolio,
 	});}
 // updated Portfolio
-  exports.updatePortFolio =async(req , res)=>{
+  exports.updatePortFolio = async(req , res)=>{
     const id =req.params.id;
     const updateData = await Portfolio.findByIdAndUpdate(id);
     console.log(updateData)

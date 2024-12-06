@@ -16,9 +16,8 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (req, file, cb)=>{
     cb(null, 'uploads/images');
   },
   filename: (req, file, cb) => {
@@ -41,7 +40,6 @@ app.use('/api', authRouter.router);
 app.use('/api', portfolioRouter.router);
 
 const PORT = process.env.PORT || 3000;
-
 app.listen(PORT, () => {
   console.log(`Server Start ${PORT}`);
 });
