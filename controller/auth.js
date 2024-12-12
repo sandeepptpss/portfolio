@@ -10,14 +10,14 @@ exports.userLogin = async (req, res) => {
     if (!username && !email) {
       return res.status(400).send({ message: 'Username or Email is required' });
     }
-    if (!password) {
+    if(!password) {
       return res.status(400).send({ message: 'Password is required' });
     }
     const user = await User.findOne({
       $or: [{ username }, { email }]
     });
-    if (!user) {
-      return res.status(404).send({ message: 'User not found' });
+    if(!user) {
+      return res.status(404).send({ message: 'Username or Email not found' });
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -25,7 +25,7 @@ exports.userLogin = async (req, res) => {
     }
     const token = jwt.sign(
       { id: user._id, email: user.email, username: user.username },
-      process.env.JWT_SECRET,
+        process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
     return res.status(200).send({
@@ -51,7 +51,7 @@ exports.forgotPassword = async (req, res) => {
     }
     // Generate token and set expiration
     const token = crypto.randomBytes(32).toString('hex');
-    const expiration = Date.now() + 3600000; // 1 hour expiry time (3600000ms = 1 hour)
+    const expiration = Date.now() + 3600000;
     // Save token and expiration to the user's record
     user.resetPasswordToken = token;
     user.resetPasswordExpires = expiration;
@@ -66,7 +66,7 @@ exports.forgotPassword = async (req, res) => {
         pass: process.env.EMAIL_PASS,
       },
     });
-    // Define email options, including the reset password link
+// Define email options, including the reset password link
     const mailOptions = {
       to: user.email,
       from: process.env.EMAIL_USER,
@@ -82,8 +82,7 @@ exports.forgotPassword = async (req, res) => {
         text-decoration: none;
         border-radius: 5px;
         border: none;
-        text-align: center;
-      ">
+        text-align: center;">
         Reset your password
       </a>`,
     };
@@ -99,7 +98,7 @@ exports.forgotPassword = async (req, res) => {
   }
 };
 // function resetPassword 
-exports.resetPassword = async (req, res) => {
+exports.resetPassword = async (req, res) =>{
   try {
     const { token } = req.query;
     const { password } = req.body;

@@ -9,3 +9,4 @@ const conatctSchema = new Schema({
   messages: { type: String }
 });
 exports.Contact = mongoose.model('Contact', conatctSchema);
+// module.exports = mongoose.model('Contact', conatctSchema);

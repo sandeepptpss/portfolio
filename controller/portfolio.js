@@ -1,7 +1,7 @@
 const path = require('path');
 const model = require('../model/portfolio');
 const Portfolio = model.Portfolio;
-// insert data portfolio
+//insert data portfolio
 exports.portfolioCreate = async (req, res) => {
 	const {
 		title,
@@ -12,23 +12,19 @@ exports.portfolioCreate = async (req, res) => {
 	if (!req.files[0]){
 		return res.status(400).send('No image file uploaded.');
 	}
-	const existingTitle = await Portfolio.findOne({
-		title
-	});
-	if (existingTitle) {
+	const existingTitle = await Portfolio.findOne({title});
+    if(existingTitle){
 		return res.status(409).send({
-			code: 409,
-			message: 'Title already use'
-		});
-	}
-	const existingLink = await Portfolio.findOne({
-		portfoliolink
+		    code: 409,
+			message: 'Title already Use'
 	});
+}
+const existingLink = await Portfolio.findOne({portfoliolink});
 	if(existingLink){
 		return res.status(409).send({
-			conde:409,
+			code:409,
 			message:'Portfoliolink already use'
-		})
+	  })
 	}
 	const newPortfolio = new Portfolio({
 		title,
@@ -42,7 +38,7 @@ exports.portfolioCreate = async (req, res) => {
 			code: 200,
 			message: 'Portfolio Data Insert Successfully'
 		});
-	} else {
+	  }else {
 		return res.send({
 			code: 404,
 			message: 'Service error'
@@ -50,9 +46,9 @@ exports.portfolioCreate = async (req, res) => {
 	}
 }
 // portfolioViews
-exports.portfolioViews = async (req, res) => {
+exports.portfolioViews = async (req, res)=>{
 	const portfolioShow = await Portfolio.find();
-	if (portfolioShow) {
+	if (portfolioShow){
 		return res.status(200).json(portfolioShow);
 	} else {
 		return res.send({
@@ -61,7 +57,6 @@ exports.portfolioViews = async (req, res) => {
 		});
 	}
 };
-
 // get Portfolio data
 exports.getPortfolio = async (req, res) => {
 	const id = req.params.id;
@@ -76,7 +71,7 @@ exports.getPortfolio = async (req, res) => {
 	}
 }
 // delete Portfolio
-exports.deletePortfolio = async (req, res) => {
+exports.deletePortfolio = async (req, res)=>{
 	const id = req.params.id;
 	const deletedPortfolio = await Portfolio.findByIdAndDelete(id);
 	if (!deletedPortfolio) {
@@ -88,12 +83,12 @@ exports.deletePortfolio = async (req, res) => {
 		code: 200,
 		message: 'Portfolio deleted successfully',
 		user: deletedPortfolio,
-	});}
+	});
+}
 // updated Portfolio
   exports.updatePortFolio = async(req , res)=>{
     const id =req.params.id;
     const updateData = await Portfolio.findByIdAndUpdate(id);
-    console.log(updateData)
     if(updateData){
       return res.status(200).json({
         code: 200,

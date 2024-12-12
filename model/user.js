@@ -1,5 +1,5 @@
 const mongoose =require('mongoose');
-const {Schema} =mongoose;
+const {Schema} = mongoose;
 const  userSchema = new Schema({
   name: { 
         type: String
@@ -10,19 +10,25 @@ const  userSchema = new Schema({
   gender: { 
       type: String
   },
-  email:{
-      type :String,
-      required :true,
-      uniique :true
-    },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+  },
   password :{
       type: String,
       required:true
     },
-  resetPasswordToken: { 
+  role: {
+      type: String,
+      default: "Basic",
+      required: true,
+    },
+  resetPasswordToken:{ 
       type: String
      },
-  resetPasswordExpires: { 
+  resetPasswordExpires:{ 
      type: Date
   },
   token:{

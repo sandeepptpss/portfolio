@@ -11,9 +11,9 @@ exports.createContact = async (req, res) => {
     email,
     messages
   });
-  const success = await newContact.save();
+const success = await newContact.save();
     if(success) {
-      return res.send({ code: 200, message: 'add success' });
+      res.status("200").json({message:"sucessfully added",success});
     } else {
       return res.send({ code: 404, message: 'Service error' });
     }
@@ -21,6 +21,7 @@ exports.createContact = async (req, res) => {
 exports.getAllContact = async (req, res) => {
   try {
     const contacts = await Contact.find();
+ 
     res.json(contacts);
   } catch (err) {
     console.error('Error fetching contacts:', err);
