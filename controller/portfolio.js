@@ -17,7 +17,7 @@ exports.portfolioCreate = async (req, res) => {
 		return res.status(409).send({
 		    code: 409,
 			message: 'Title already Use'
-	});
+ });
 }
 const existingLink = await Portfolio.findOne({portfoliolink});
 	if(existingLink){
@@ -33,7 +33,7 @@ const existingLink = await Portfolio.findOne({portfoliolink});
 		image: image.path
 	});
 	const success = await newPortfolio.save();
-	if (success) {
+	if (success){
 		return res.send({
 			code: 200,
 			message: 'Portfolio Data Insert Successfully'
@@ -99,4 +99,4 @@ exports.deletePortfolio = async (req, res)=>{
       return res.status(404).json({
         message: `No Portfolio found with ID ${id}`
       })
-    }}
+}}

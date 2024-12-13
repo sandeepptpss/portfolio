@@ -7,3 +7,4 @@ router.get('/getuser/:id', userController.getUser);
 router.delete('delete/:id', userController.deleteUser);
 router.patch('/update/:id', userController.updateUser);
 exports.router = router;
+

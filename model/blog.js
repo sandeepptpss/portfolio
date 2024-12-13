@@ -5,7 +5,10 @@ const blogSchema = new Schema({
     content:{ type:String},
     image:{ type:String},
     auther:{ type:String}
-})
+},
+{ timestamps: true }
+
+)
 exports.Blog = mongoose.model('Blog', blogSchema);
 
 

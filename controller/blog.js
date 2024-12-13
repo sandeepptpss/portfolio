@@ -10,8 +10,7 @@ const newBlog = new Blog({
     title,
     content,
     auther,
-    image: image.path,
-    date
+    image: image.path
   });
 const exitTitle = await Blog.findOne({title});
 if(exitTitle){
@@ -23,10 +22,10 @@ if(exitTitle){
 const success = await newBlog.save();
 if(success){
     return res.status(200).send({
-        code: 200,
-        message: 'sucessfully added',
-        data:success
-});
+    code: 200,
+    message: 'sucessfully added',
+    data:success
+})
 }else{
 return res.status(400).send('Server Error');
 }
@@ -38,8 +37,38 @@ return res.status(200).send({
         code: 200,
         message: 'Blogs retrieved successfully',
         data: showAllBlog,
-      });
+  });
 }else{
 return res.status(400).send('Server Error');
 }
+}
+exports.getBlogId = async(req, res)=>{
+    try {
+    const id = req.params.id;
+    const blogs = await Blog.findById(id);
+    return res.status(200).json(blogs);
+    } catch (error) {
+        return res.send({
+			message: 404,
+			message: 'Service error'
+		});
+    }
+}
+exports.deleteBlog = async(req, res)=>{
+try {
+   const id = req.params.id;
+    const blog = await Blog.findByIdAndDelete(id);
+   if(blog){
+    return res.status(200).send({
+        code: 200,
+        message: 'Deleted Data successfully',
+        data: blog,
+      });
+   }
+  }catch (error) {
+    return res.send({
+        code: 404,
+        message: 'Service error'
+    });
+} 
 }

@@ -16,7 +16,6 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-
 const storage = multer.diskStorage({
   destination: 'uploads/images',
   filename: (req, file, cb) => {
@@ -24,7 +23,7 @@ const storage = multer.diskStorage({
     cb(null, `${path.basename(file.originalname, ext)}-${Date.now()}${ext}`);
   },
 });
-//Use Multer with storage configuration
+// Use Multer with storage configuration
 const upload = multer({ storage });
 app.use(upload.any())
 app.use('/uploads', express.static('uploads'));
@@ -34,8 +33,8 @@ app.use('/api/contact', contactRouter.router);
 app.use('/api', userRouter.router);
 app.use('/api', authRouter.router);
 app.use('/api', portfolioRouter.router);
-app.use('/api', blogRouter)
+app.use('/api', blogRouter.router)
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+app.listen(PORT,()=>{
   console.log(`Server Start:  http://localhost:${PORT}`);
 });

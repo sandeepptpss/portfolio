@@ -5,4 +5,5 @@ router.get('/portfolioview', portfolioController.portfolioViews);
 router.get('/getportfolio/:id', portfolioController.getPortfolio);
 router.delete('/delete-portfolio/:id', portfolioController.deletePortfolio);
 router.patch('update-portfolio/:id',portfolioController.updatePortFolio)
-exports.router = router;  
+exports.router = router;
+
