@@ -7,7 +7,6 @@ const blogSchema = new Schema({
     auther:{ type:String}
 },
 { timestamps: true }
-
 )
 exports.Blog = mongoose.model('Blog', blogSchema);
 

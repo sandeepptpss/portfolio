@@ -7,6 +7,7 @@ const User = model.User;
 exports.userLogin = async (req, res) => {
   try {
     const { username, email, password } = req.body;
+
     if (!username && !email) {
       return res.status(400).send({ message: 'Username or Email is required' });
     }
@@ -16,7 +17,7 @@ exports.userLogin = async (req, res) => {
     const user = await User.findOne({
       $or: [{ username }, { email }]
     });
-    if(!user) {
+    if(!user){
       return res.status(404).send({ message: 'Username or Email not found' });
     }
     const isMatch = await bcrypt.compare(password, user.password);
@@ -24,13 +25,17 @@ exports.userLogin = async (req, res) => {
       return res.status(401).send({ message: 'Invalid email or password', status: 401 });
     }
     const token = jwt.sign(
-      { id: user._id, email: user.email, username: user.username },
+      { id: user._id, 
+        email: user.email, 
+        username: user.username,
+        role: user.role
+       },
         process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: '24h' }
     );
     return res.status(200).send({
       message: 'Login successful',
-      user: { id: user._id, email: user.email, username: user.username },
+      user: { id: user._id, email: user.email, username: user.username,role: user.role },
       token
     });
   } catch (error) {
@@ -38,7 +43,6 @@ exports.userLogin = async (req, res) => {
     return res.status(500).send({ message: 'Server error', error: error.message });
   }
 };
-
 exports.forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;

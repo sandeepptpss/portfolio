@@ -3,20 +3,16 @@ const model = require('../model/portfolio');
 const Portfolio = model.Portfolio;
 //insert data portfolio
 exports.portfolioCreate = async (req, res) => {
-	const {
-		title,
-		description,
-		portfoliolink
-	} = req.body;
-	const image = req.files[0]
-	if (!req.files[0]){
-		return res.status(400).send('No image file uploaded.');
-	}
-	const existingTitle = await Portfolio.findOne({title});
-    if(existingTitle){
-		return res.status(409).send({
-		    code: 409,
-			message: 'Title already Use'
+const { title, description, portfoliolink } = req.body;
+const image = req.files[0];
+if(!req.files[0]){
+	return res.status(400).send('No image file uploaded.');
+}
+const existingTitle = await Portfolio.findOne({title});
+if(existingTitle){
+	return res.status(409).send({
+	code: 409,
+	message: 'Title already Use'
  });
 }
 const existingLink = await Portfolio.findOne({portfoliolink});
@@ -50,7 +46,7 @@ exports.portfolioViews = async (req, res)=>{
 	const portfolioShow = await Portfolio.find();
 	if (portfolioShow){
 		return res.status(200).json(portfolioShow);
-	} else {
+	  } else {
 		return res.send({
 			code: 404,
 			message: 'Service error'
@@ -71,19 +67,20 @@ exports.getPortfolio = async (req, res) => {
 	}
 }
 // delete Portfolio
-exports.deletePortfolio = async (req, res)=>{
+exports.deletePortfolio = async(req, res)=>{
 	const id = req.params.id;
 	const deletedPortfolio = await Portfolio.findByIdAndDelete(id);
-	if (!deletedPortfolio) {
-		return res.status(404).json({
+ if(!deletedPortfolio) {
+	   return res.status(404).json({
 			message: `No Portfolio found with ID ${id}`
-		});
-	}
+	   });
+	}else{
 	return res.status(200).json({
 		code: 200,
 		message: 'Portfolio deleted successfully',
 		user: deletedPortfolio,
-	});
+	  });
+	}
 }
 // updated Portfolio
   exports.updatePortFolio = async(req , res)=>{
@@ -98,5 +95,5 @@ exports.deletePortfolio = async (req, res)=>{
     }else{
       return res.status(404).json({
         message: `No Portfolio found with ID ${id}`
-      })
+    })
 }}

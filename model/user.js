@@ -19,11 +19,7 @@ const  userSchema = new Schema({
       type: String,
       required:true
     },
-  role:{
-      type: String,
-      default: "Basic",
-      required: true,
-    },
+  role: { type: String, default: 'user', eNum: ['user', 'admin'] },
   resetPasswordToken:{ 
       type: String
     },
